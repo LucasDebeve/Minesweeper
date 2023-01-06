@@ -202,3 +202,11 @@ def getAnnotationGrilleDemineur(grille: list, coord: tuple) -> str:
     return getAnnotationCellule(getCelluleGrilleDemineur(grille, coord))
 
 
+def getMinesRestantesGrilleDemineur(grille: list) -> int:
+    w, h = getNbLignesGrilleDemineur(grille), getNbColonnesGrilleDemineur(grille)
+    nb = 0
+    for i in range(w):
+        for j in range(h):
+            if getAnnotationGrilleDemineur(grille, (i, j)) == const.FLAG:
+                nb += 1
+    return getNbMinesGrilleDemineur(grille) - nb
