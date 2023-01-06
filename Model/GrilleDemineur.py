@@ -305,3 +305,41 @@ def simplifierGrilleDemineur(grille: list, coord: tuple) -> set:
                             cellulesADecouvrir.append(voisin)
                 cellulesDecouvertes.add(currentCoord)
         return cellulesDecouvertes
+
+
+def ajouterFlagsGrilleDemineur(grille: list, coord: tuple) -> set:
+    #Liste les cellules voisines non visible
+    voisinsNonDecouverts = []
+    for voisin in getCoordonneeVoisinsGrilleDemineur(grille, coord):
+        if not isVisibleGrilleDemineur(grille, voisin):
+            voisinsNonDecouverts.append(voisin)
+    # Le contenu de la cellule est-il égale au nombre de voisin non visible
+    if getContenuGrilleDemineur(grille, coord) == len(voisinsNonDecouverts):
+        for voisin in voisinsNonDecouverts:
+            if not getAnnotationGrilleDemineur(grille, voisin):
+                getCelluleGrilleDemineur(grille, voisin)[const.ANNOTATION] = const.FLAG
+    return set(voisinsNonDecouverts)
+
+
+def simplifierToutGrilleDemineur(grille: list) -> tuple:
+    print("Je simplifie tout là !")
+    isModifie = True
+    simplifie = set()
+    ajoute = set()
+    while isModifie:
+        isModifie = False
+        for i in range(getNbLignesGrilleDemineur(grille)):
+            for j in range(getNbColonnesGrilleDemineur(grille)):
+                cell = getCelluleGrilleDemineur(grille, (i, j))
+                if cell[const.VISIBLE] and cell[const.RESOLU] != "Résolue":
+                    a = ajouterFlagsGrilleDemineur(grille, (i, j))
+                    s = simplifierGrilleDemineur(grille, (i, j))
+                    if len(s) != 0 or len(a) != 0:
+                        print(f"on peut decouvrir : {s}")
+                        print(f"on peut flag : {a}")
+                        isModifie = True if not isModifie else None
+                        cell[const.RESOLU] = "Résolue"
+                        simplifie = simplifie.union(s)
+                        ajoute = ajoute.union(a)
+    #print(simplifie, ajoute)
+    return (simplifie, ajoute)

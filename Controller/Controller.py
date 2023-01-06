@@ -202,8 +202,9 @@ class Controller:
             self.update_content_cells(lst)
         elif button == 5:
             lst_content, lst_flag = self.simplifierToutGrilleDemineur(self.demineur)
-            self.update_content_cells(lst_content)
             self.update_flag_cells(lst_flag)
+            self.update_content_cells(lst_content)
+
         print("Etat final de la cellule :", cell)
         # n = randint(0, 10)
         # if n <= 8:
