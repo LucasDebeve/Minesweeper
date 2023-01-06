@@ -153,7 +153,7 @@ def getCoordonneeVoisinsGrilleDemineur(grille: list, coord: tuple) -> list:
 
 
 def placerMinesGrilleDemineur(grille: list, nb: int, coord: tuple) -> None:
-    w, h = getNbLignesGrilleDemineur(grille), getNbColonnesGrilleDemineur(grille)
+    h, w = getNbLignesGrilleDemineur(grille), getNbColonnesGrilleDemineur(grille)
     if not isCoordonneeCorrecte(grille, coord):
         raise IndexError("placerMinesGrilleDemineur : la coordonnée n’est pas dans la grille")
     elif nb < 0 or nb >= (w*h):
@@ -162,8 +162,8 @@ def placerMinesGrilleDemineur(grille: list, nb: int, coord: tuple) -> None:
         while nb > 0:
             i, j = coord
             while (i, j) == coord:
-                i = randint(0, w-1)
-                j = randint(0, h-1)
+                i = randint(0, h-1)
+                j = randint(0, w-1)
             cellule = getCelluleGrilleDemineur(grille, (i, j))
             if not contientMineCellule(cellule):
                 setContenuCellule(cellule, const.ID_MINE)
@@ -173,9 +173,9 @@ def placerMinesGrilleDemineur(grille: list, nb: int, coord: tuple) -> None:
     return None
 
 def compterMinesVoisinesGrilleDemineur(grille: list) -> None:
-    w, h = getNbLignesGrilleDemineur(grille), getNbColonnesGrilleDemineur(grille)
-    for i in range(w):
-        for j in range(h):
+    h, w = getNbLignesGrilleDemineur(grille), getNbColonnesGrilleDemineur(grille)
+    for i in range(h):
+        for j in range(w):
             cellule = getCelluleGrilleDemineur(grille, (i, j)) # On récupère la cellule
             if contientMineCellule(cellule): # Si elle contient une mine
                 for voisin in getCoordonneeVoisinsGrilleDemineur(grille, (i, j)): # On parcourt ces voisins
@@ -190,9 +190,9 @@ def getNbMinesGrilleDemineur(grille: list) -> int:
         raise ValueError("getNbMinesGrilleDemineur : le paramètre n’est pas une grille.")
     else:
         nbMine = 0
-        w, h = getNbLignesGrilleDemineur(grille), getNbColonnesGrilleDemineur(grille)
-        for i in range(w):
-            for j in range(h):
+        h, w = getNbLignesGrilleDemineur(grille), getNbColonnesGrilleDemineur(grille)
+        for i in range(h):
+            for j in range(w):
                 if contientMineGrilleDemineur(grille, (i, j)):
                     nbMine += 1
         return nbMine
@@ -203,10 +203,24 @@ def getAnnotationGrilleDemineur(grille: list, coord: tuple) -> str:
 
 
 def getMinesRestantesGrilleDemineur(grille: list) -> int:
-    w, h = getNbLignesGrilleDemineur(grille), getNbColonnesGrilleDemineur(grille)
+    h, w = getNbLignesGrilleDemineur(grille), getNbColonnesGrilleDemineur(grille)
     nb = 0
-    for i in range(w):
-        for j in range(h):
+    for i in range(h):
+        for j in range(w):
             if getAnnotationGrilleDemineur(grille, (i, j)) == const.FLAG:
                 nb += 1
     return getNbMinesGrilleDemineur(grille) - nb
+
+
+def gagnerGrilleDemineur(grille: list) -> bool:
+    h, w = getNbLignesGrilleDemineur(grille), getNbColonnesGrilleDemineur(grille)
+    gagner = True
+    i, j = 0, 0
+    while gagner and i < h:
+        while gagner and j < w:
+            if (not contientMineGrilleDemineur(grille, (i,j))) and not isVisibleGrilleDemineur(grille, (i,j)):
+                gagner = False
+        j = 0
+        i += 1
+
+    return gagner
