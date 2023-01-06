@@ -179,3 +179,16 @@ def compterMinesVoisinesGrilleDemineur(grille: list) -> None:
                         mines = getContenuGrilleDemineur(grille, voisin)+1 # On récupère la cellule voisine
                         setContenuGrilleDemineur(grille, voisin, mines)
     return None
+
+
+def getNbMinesGrilleDemineur(grille: list) -> int:
+    if not type_grille_demineur(grille):
+        raise ValueError("getNbMinesGrilleDemineur : le paramètre n’est pas une grille.")
+    else:
+        nbMine = 0
+        w, h = getNbLignesGrilleDemineur(grille), getNbColonnesGrilleDemineur(grille)
+        for i in range(w):
+            for j in range(h):
+                if contientMineGrilleDemineur(grille, (i,j)):
+                    nbMine += 1
+        return nbMine
