@@ -117,3 +117,32 @@ def setVisibleGrilleDemineur(grille: list, coord: tuple, visible: bool) -> None:
 def contientMineGrilleDemineur(grille: list, coord: tuple) -> bool:
     return contientMineCellule(getCelluleGrilleDemineur(grille, coord))
 
+
+def getCoordonneeVoisinsGrilleDemineur(grille: list, coord: tuple) -> list:
+    voisins = []
+    minLigneVoisin, maxLigneVoisin, minColonneVoisin, maxColonneVoisin = (0,0,0,0)
+    if coord[0] == 0:
+        minLigneVoisin = coord[0]
+        maxLigneVoisin = coord[0] + 1
+    elif coord[0] == getNbLignesGrilleDemineur(grille) - 1:
+        maxLigneVoisin = coord[0]
+        minLigneVoisin = coord[0] - 1
+    else:
+        minLigneVoisin = coord[0] - 1
+        maxLigneVoisin = coord[0] + 1
+
+    if coord[1] == 0:
+        minColonneVoisin = coord[1]
+        maxColonneVoisin = coord[1] + 1
+    elif coord[1] == getNbColonnesGrilleDemineur(grille) - 1:
+        minColonneVoisin = coord[1] - 1
+        maxColonneVoisin = coord[1]
+    else:
+        minColonneVoisin = coord[1] - 1
+        maxColonneVoisin = coord[1] + 1
+
+    for i in range(minLigneVoisin, maxLigneVoisin+1):
+        for j in range(minColonneVoisin, maxColonneVoisin+1):
+            if (i, j) != coord:
+                voisins.append((i, j))
+    return voisins
