@@ -331,15 +331,16 @@ def simplifierToutGrilleDemineur(grille: list) -> tuple:
         for i in range(getNbLignesGrilleDemineur(grille)):
             for j in range(getNbColonnesGrilleDemineur(grille)):
                 cell = getCelluleGrilleDemineur(grille, (i, j))
-                if cell[const.VISIBLE] and cell[const.RESOLU] != "Résolue":
+                if cell[const.VISIBLE] and cell[const.RESOLU] != 0:
                     a = ajouterFlagsGrilleDemineur(grille, (i, j))
                     s = simplifierGrilleDemineur(grille, (i, j))
                     if len(s) != 0 or len(a) != 0:
                         print(f"on peut decouvrir : {s}")
                         print(f"on peut flag : {a}")
                         isModifie = True if not isModifie else None
-                        cell[const.RESOLU] = "Résolue"
+                        cell[const.RESOLU] = 1
                         simplifie = simplifie.union(s)
                         ajoute = ajoute.union(a)
+                        """Problème : Que signifie résolu ? Quand la valeur associé à const.RESOLU doit être 'Résolu' """
     #print(simplifie, ajoute)
     return (simplifie, ajoute)
