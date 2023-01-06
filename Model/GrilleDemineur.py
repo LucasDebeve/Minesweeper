@@ -259,3 +259,21 @@ def reinitialiserGrilleDemineur(grille: list) -> None:
             reinitiliserCellule(getCelluleGrilleDemineur(grille, (i, j)))
     showGrid(grille)
     return None
+
+
+def decouvrirGrilleDemineur(grille: list, coord: tuple) -> set:
+    if not isinstance(grille, list) or not isinstance(coord, tuple):
+        raise TypeError("decouvrirGrilleDemineur : un des paramètres n’est pas du bon type.")
+    if not (0 <= coord[0] < len(grille) and 0 <= coord[1] < len(grille[0])):
+        raise IndexError("decouvrirGrilleDemineur : la coordonnée n’est pas dans la grille.")
+    cellulesDecouvertes = set()
+    cellulesADecouvrir = [coord]
+    while cellulesADecouvrir:
+        currentCoord = cellulesADecouvrir.pop()
+        if currentCoord not in cellulesDecouvertes:
+            grille[currentCoord[0]][currentCoord[1]][const.VISIBLE] = True
+            cellulesDecouvertes.add(currentCoord)
+            if grille[currentCoord[0]][currentCoord[1]][const.CONTENU] == 0:
+                cellules_voisines = getCoordonneeVoisinsGrilleDemineur(grille, currentCoord)
+                cellulesADecouvrir.extend(cellules_voisines)
+    return cellulesDecouvertes
