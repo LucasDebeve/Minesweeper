@@ -72,11 +72,21 @@ def contientMineCellule(cell: dict) -> bool:
     return getContenuCellule(cell) == const.ID_MINE
 
 
-def isAnnotationCorrect(annotation: str) -> bool:
-    return annotation == const.DOUTE or annotation == const.FLAG
+def isAnnotationCorrecte(annotation: str) -> bool:
+    return annotation == const.DOUTE or annotation == const.FLAG or annotation == None
 
 
 def getAnnotationCellule(cell: dict) -> str:
     if not type_cellule(cell):
         raise TypeError(f"getAnnotationCellule : le paramètre {cell} n'est pas une cellule")
     return cell.get(const.ANNOTATION, None)
+
+
+def changeAnnotationCellule(cell: dict) -> None:
+    if not type_cellule(cell):
+        raise TypeError("changeAnnotationCellule : le paramètre n'est pas une cellule")
+    else:
+        order = [None, const.FLAG, const.DOUTE]
+        currentState = order.index(getAnnotationCellule(cell))
+        cell.get[const.ANNOTATION] = order[currentState + 1] if currentState != 2 else cell.get[const.ANNOTATION] = order[0]
+        return None
