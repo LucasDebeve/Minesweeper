@@ -212,15 +212,27 @@ def getMinesRestantesGrilleDemineur(grille: list) -> int:
     return getNbMinesGrilleDemineur(grille) - nb
 
 
-def gagnerGrilleDemineur(grille: list) -> bool:
+def showGrid(grille: list) -> None:
+    """Ajout personnel simplifiant le debugage
+
+    :param grille:
+    :return:
+    """
+    g = []
+    for i in range(len(grille)):
+        line = [(("00" if not isVisibleGrilleDemineur(grille, (i, j)) else "01") if contientMineGrilleDemineur(grille, (i, j)) else ("10" if not isVisibleGrilleDemineur(grille, (i,j)) else "11")) for j in range(getNbColonnesGrilleDemineur(grille))]
+        print(line)
+
+
+def gagneGrilleDemineur(grille: list) -> bool:
     h, w = getNbLignesGrilleDemineur(grille), getNbColonnesGrilleDemineur(grille)
     gagner = True
     i, j = 0, 0
     while gagner and i < h:
         while gagner and j < w:
-            if (not contientMineGrilleDemineur(grille, (i,j))) and not isVisibleGrilleDemineur(grille, (i,j)):
+            if contientMineGrilleDemineur(grille, (i,j)) and isVisibleGrilleDemineur(grille, (i, j)) or (not contientMineGrilleDemineur(grille, (i,j))) and (not isVisibleGrilleDemineur(grille, (i, j))):
                 gagner = False
+            j += 1
         j = 0
         i += 1
-
     return gagner
