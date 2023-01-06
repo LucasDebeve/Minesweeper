@@ -86,11 +86,12 @@ def changeAnnotationCellule(cell: dict) -> None:
     if not type_cellule(cell):
         raise TypeError("changeAnnotationCellule : le paramètre n'est pas une cellule")
     else:
-        order = [None, const.FLAG, const.DOUTE]
-        currentState = order.index(getAnnotationCellule(cell))
-        if currentState == 2:
-            cell.get[const.ANNOTATION] = order[0]
+        currentAnnotation = getAnnotationCellule(cell)
+        if currentAnnotation == None:
+            cell[const.ANNOTATION] = const.FLAG
+        elif currentAnnotation == const.FLAG:
+            cell[const.ANNOTATION] = const.DOUTE
         else:
-            cell.get[const.ANNOTATION] = order[currentState + 1]
+            cell[const.ANNOTATION] = None
         return None
 

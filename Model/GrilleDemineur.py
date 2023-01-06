@@ -119,33 +119,37 @@ def contientMineGrilleDemineur(grille: list, coord: tuple) -> bool:
 
 
 def getCoordonneeVoisinsGrilleDemineur(grille: list, coord: tuple) -> list:
-    voisins = []
-    minLigneVoisin, maxLigneVoisin, minColonneVoisin, maxColonneVoisin = (0,0,0,0)
-    if coord[0] == 0:
-        minLigneVoisin = coord[0]
-        maxLigneVoisin = coord[0] + 1
-    elif coord[0] == getNbLignesGrilleDemineur(grille) - 1:
-        maxLigneVoisin = coord[0]
-        minLigneVoisin = coord[0] - 1
+    if not isinstance(grille, list) or not isinstance(coord, tuple):
+        raise TypeError("getCoordonneeVoisinsGrilleDemineur : un des paramètres n’est pas du bon type.")
+    elif not isCoordonneeCorrecte(grille, coord):
+        raise IndexError("getCoordonneeVoisinsGrilleDemineur : la coordonnée n’est pas dans la grille.")
     else:
-        minLigneVoisin = coord[0] - 1
-        maxLigneVoisin = coord[0] + 1
+        voisins = []
+        if coord[0] == 0:
+            minLigneVoisin = coord[0]
+            maxLigneVoisin = coord[0] + 1
+        elif coord[0] == getNbLignesGrilleDemineur(grille) - 1:
+            maxLigneVoisin = coord[0]
+            minLigneVoisin = coord[0] - 1
+        else:
+            minLigneVoisin = coord[0] - 1
+            maxLigneVoisin = coord[0] + 1
 
-    if coord[1] == 0:
-        minColonneVoisin = coord[1]
-        maxColonneVoisin = coord[1] + 1
-    elif coord[1] == getNbColonnesGrilleDemineur(grille) - 1:
-        minColonneVoisin = coord[1] - 1
-        maxColonneVoisin = coord[1]
-    else:
-        minColonneVoisin = coord[1] - 1
-        maxColonneVoisin = coord[1] + 1
+        if coord[1] == 0:
+            minColonneVoisin = coord[1]
+            maxColonneVoisin = coord[1] + 1
+        elif coord[1] == getNbColonnesGrilleDemineur(grille) - 1:
+            minColonneVoisin = coord[1] - 1
+            maxColonneVoisin = coord[1]
+        else:
+            minColonneVoisin = coord[1] - 1
+            maxColonneVoisin = coord[1] + 1
 
-    for i in range(minLigneVoisin, maxLigneVoisin+1):
-        for j in range(minColonneVoisin, maxColonneVoisin+1):
-            if (i, j) != coord:
-                voisins.append((i, j))
-    return voisins
+        for i in range(minLigneVoisin, maxLigneVoisin+1):
+            for j in range(minColonneVoisin, maxColonneVoisin+1):
+                if (i, j) != coord:
+                    voisins.append((i, j))
+        return voisins
 
 
 def placerMinesGrilleDemineur(grille: list, nb: int, coord: tuple) -> None:
@@ -189,7 +193,7 @@ def getNbMinesGrilleDemineur(grille: list) -> int:
         w, h = getNbLignesGrilleDemineur(grille), getNbColonnesGrilleDemineur(grille)
         for i in range(w):
             for j in range(h):
-                if contientMineGrilleDemineur(grille, (i,j)):
+                if contientMineGrilleDemineur(grille, (i, j)):
                     nbMine += 1
         return nbMine
 
