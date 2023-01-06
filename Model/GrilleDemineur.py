@@ -30,7 +30,7 @@ def type_grille_demineur(grille: list) -> bool:
     if nc == 0:
         return False
     return next(filterfalse(lambda line: type(line) == list and len(line) == nc
-                            and next(filterfalse(type_cellule, line), True) is True, grille), True) is True
+                                         and next(filterfalse(type_cellule, line), True) is True, grille), True) is True
     # Tableau régulier
     # nc = None
     # for line in grille:
@@ -54,9 +54,11 @@ def type_grille_demineur(grille: list) -> bool:
 
 def construireGrilleDemineur(li: int, col: int) -> list:
     if type(li) != int or type(col) != int:
-        raise TypeError(f"construireGrilleDemineur : Le nombre delignes ({li}) ou de colonnes ({col})) n’est pas un entier.")
+        raise TypeError(
+            f"construireGrilleDemineur : Le nombre delignes ({li}) ou de colonnes ({col})) n’est pas un entier.")
     if li < 1 or col < 1:
-        raise ValueError(f"construireGrilleDemineur : Le nombre de lignes ({li}) ou de colonnes ({col}) est négatif ou nul.")
+        raise ValueError(
+            f"construireGrilleDemineur : Le nombre de lignes ({li}) ou de colonnes ({col}) est négatif ou nul.")
     grille = []
     for y in range(li):
         ligne = []
@@ -81,7 +83,7 @@ def getNbColonnesGrilleDemineur(grille: list) -> int:
 
 
 def isCoordonneeCorrecte(grille: list, coord: tuple) -> bool:
-    if type(coord) != tuple or type(grille) != list or not type_grille_demineur(grille)\
+    if type(coord) != tuple or type(grille) != list or not type_grille_demineur(grille) \
             or len(coord) != 2 or type(coord[0]) != int or type(coord[1]) != int:
         raise TypeError("isCoordonneeCorrecte : un des paramètres n’est pas du bon type.")
     else:
@@ -145,8 +147,8 @@ def getCoordonneeVoisinsGrilleDemineur(grille: list, coord: tuple) -> list:
             minColonneVoisin = coord[1] - 1
             maxColonneVoisin = coord[1] + 1
 
-        for i in range(minLigneVoisin, maxLigneVoisin+1):
-            for j in range(minColonneVoisin, maxColonneVoisin+1):
+        for i in range(minLigneVoisin, maxLigneVoisin + 1):
+            for j in range(minColonneVoisin, maxColonneVoisin + 1):
                 if (i, j) != coord:
                     voisins.append((i, j))
         return voisins
@@ -156,14 +158,14 @@ def placerMinesGrilleDemineur(grille: list, nb: int, coord: tuple) -> None:
     h, w = getNbLignesGrilleDemineur(grille), getNbColonnesGrilleDemineur(grille)
     if not isCoordonneeCorrecte(grille, coord):
         raise IndexError("placerMinesGrilleDemineur : la coordonnée n’est pas dans la grille")
-    elif nb < 0 or nb >= (w*h):
+    elif nb < 0 or nb >= (w * h):
         raise ValueError("placerMinesGrilleDemineur : Nombre de bombes à placer incorrect")
     else:
         while nb > 0:
             i, j = coord
             while (i, j) == coord:
-                i = randint(0, h-1)
-                j = randint(0, w-1)
+                i = randint(0, h - 1)
+                j = randint(0, w - 1)
             cellule = getCelluleGrilleDemineur(grille, (i, j))
             if not contientMineCellule(cellule):
                 setContenuCellule(cellule, const.ID_MINE)
@@ -172,15 +174,16 @@ def placerMinesGrilleDemineur(grille: list, nb: int, coord: tuple) -> None:
     compterMinesVoisinesGrilleDemineur(grille)
     return None
 
+
 def compterMinesVoisinesGrilleDemineur(grille: list) -> None:
     h, w = getNbLignesGrilleDemineur(grille), getNbColonnesGrilleDemineur(grille)
     for i in range(h):
         for j in range(w):
-            cellule = getCelluleGrilleDemineur(grille, (i, j)) # On récupère la cellule
-            if contientMineCellule(cellule): # Si elle contient une mine
-                for voisin in getCoordonneeVoisinsGrilleDemineur(grille, (i, j)): # On parcourt ces voisins
+            cellule = getCelluleGrilleDemineur(grille, (i, j))  # On récupère la cellule
+            if contientMineCellule(cellule):  # Si elle contient une mine
+                for voisin in getCoordonneeVoisinsGrilleDemineur(grille, (i, j)):  # On parcourt ces voisins
                     if not contientMineGrilleDemineur(grille, voisin):
-                        mines = getContenuGrilleDemineur(grille, voisin)+1 # On récupère la cellule voisine
+                        mines = getContenuGrilleDemineur(grille, voisin) + 1  # On récupère la cellule voisine
                         setContenuGrilleDemineur(grille, voisin, mines)
     return None
 
@@ -229,7 +232,9 @@ def gagneGrilleDemineur(grille: list) -> bool:
     i, j = 0, 0
     while gagner and i < h:
         while gagner and j < w:
-            if (contientMineGrilleDemineur(grille, (i, j)) and isVisibleGrilleDemineur(grille, (i, j)) and getAnnotationGrilleDemineur(grille, (i, j)) == const.FLAG) or (not contientMineGrilleDemineur(grille, (i,j))) and (not isVisibleGrilleDemineur(grille, (i, j))):
+            if (contientMineGrilleDemineur(grille, (i, j)) and isVisibleGrilleDemineur(grille, (
+            i, j)) and getAnnotationGrilleDemineur(grille, (i, j)) == const.FLAG) or (
+            not contientMineGrilleDemineur(grille, (i, j))) and (not isVisibleGrilleDemineur(grille, (i, j))):
                 gagner = False
             j += 1
         j = 0
@@ -252,12 +257,10 @@ def perduGrilleDemineur(grille) -> bool:
 
 
 def reinitialiserGrilleDemineur(grille: list) -> None:
-    showGrid(grille)
     print("\n")
     for i in range(getNbLignesGrilleDemineur(grille)):
         for j in range(getNbLignesGrilleDemineur(grille)):
             reinitiliserCellule(getCelluleGrilleDemineur(grille, (i, j)))
-    showGrid(grille)
     return None
 
 
@@ -268,12 +271,37 @@ def decouvrirGrilleDemineur(grille: list, coord: tuple) -> set:
         raise IndexError("decouvrirGrilleDemineur : la coordonnée n’est pas dans la grille.")
     cellulesDecouvertes = set()
     cellulesADecouvrir = [coord]
-    while cellulesADecouvrir:
+    while len(cellulesADecouvrir) != 0:
         currentCoord = cellulesADecouvrir.pop()
         if currentCoord not in cellulesDecouvertes:
             grille[currentCoord[0]][currentCoord[1]][const.VISIBLE] = True
             cellulesDecouvertes.add(currentCoord)
             if grille[currentCoord[0]][currentCoord[1]][const.CONTENU] == 0:
-                cellules_voisines = getCoordonneeVoisinsGrilleDemineur(grille, currentCoord)
-                cellulesADecouvrir.extend(cellules_voisines)
+                voisins = getCoordonneeVoisinsGrilleDemineur(grille, currentCoord)
+                cellulesADecouvrir.extend(voisins)
     return cellulesDecouvertes
+
+
+def simplifierGrilleDemineur(grille: list, coord: tuple) -> set:
+    if not isVisibleGrilleDemineur(grille, coord):
+        return set()
+    else:
+        cellulesDecouvertes = set()
+        cellulesADecouvrir = [coord]
+        while len(cellulesADecouvrir) != 0:
+            currentCoord = cellulesADecouvrir.pop()
+            if currentCoord not in cellulesDecouvertes:
+                voisins = getCoordonneeVoisinsGrilleDemineur(grille, currentCoord)
+                # Compte les drapeaux au voisinnage
+                nbFlag = 0
+                for voisin in voisins:
+                    if getAnnotationGrilleDemineur(grille, voisin) == const.FLAG:
+                        nbFlag += 1
+                #
+                if nbFlag == grille[currentCoord[0]][currentCoord[1]][const.CONTENU]:
+                    for voisin in voisins:
+                        if not getAnnotationGrilleDemineur(grille, voisin) == const.FLAG:
+                            setVisibleGrilleDemineur(grille, voisin, True)
+                            cellulesADecouvrir.append(voisin)
+                cellulesDecouvertes.add(currentCoord)
+        return cellulesDecouvertes
