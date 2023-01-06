@@ -230,9 +230,26 @@ def gagneGrilleDemineur(grille: list) -> bool:
     i, j = 0, 0
     while gagner and i < h:
         while gagner and j < w:
-            if contientMineGrilleDemineur(grille, (i,j)) and isVisibleGrilleDemineur(grille, (i, j)) or (not contientMineGrilleDemineur(grille, (i,j))) and (not isVisibleGrilleDemineur(grille, (i, j))):
+            if contientMineGrilleDemineur(grille, (i, j)) and isVisibleGrilleDemineur(grille, (i, j)) or (not contientMineGrilleDemineur(grille, (i,j))) and (not isVisibleGrilleDemineur(grille, (i, j))):
                 gagner = False
             j += 1
         j = 0
         i += 1
     return gagner
+
+
+def perduGrilleDemineur(grille) -> bool:
+    showGrid(grille)
+    h, w = getNbLignesGrilleDemineur(grille), getNbColonnesGrilleDemineur(grille)
+    perdu = True
+    i, j = 0, 0
+    while perdu and i < h:
+        while perdu and j < w:
+            if contientMineGrilleDemineur(grille, (i, j)) and isVisibleGrilleDemineur(grille, (i, j)):
+                perdu = False
+            j += 1
+        j = 0
+        i += 1
+    return not perdu
+
+
