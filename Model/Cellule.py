@@ -88,5 +88,9 @@ def changeAnnotationCellule(cell: dict) -> None:
     else:
         order = [None, const.FLAG, const.DOUTE]
         currentState = order.index(getAnnotationCellule(cell))
-        cell.get[const.ANNOTATION] = order[currentState + 1] if currentState != 2 else cell.get[const.ANNOTATION] = order[0]
+        if currentState == 2:
+            cell.get[const.ANNOTATION] = order[0]
+        else:
+            cell.get[const.ANNOTATION] = order[currentState + 1]
         return None
+
