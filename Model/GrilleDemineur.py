@@ -218,9 +218,8 @@ def showGrid(grille: list) -> None:
     :param grille:
     :return:
     """
-    g = []
     for i in range(len(grille)):
-        line = [(("00" if not isVisibleGrilleDemineur(grille, (i, j)) else "01") if contientMineGrilleDemineur(grille, (i, j)) else ("10" if not isVisibleGrilleDemineur(grille, (i,j)) else "11")) for j in range(getNbColonnesGrilleDemineur(grille))]
+        line = [getContenuGrilleDemineur(grille, (i, j)) for j in range(getNbColonnesGrilleDemineur(grille))]
         print(line)
 
 
@@ -230,7 +229,7 @@ def gagneGrilleDemineur(grille: list) -> bool:
     i, j = 0, 0
     while gagner and i < h:
         while gagner and j < w:
-            if contientMineGrilleDemineur(grille, (i, j)) and isVisibleGrilleDemineur(grille, (i, j)) or (not contientMineGrilleDemineur(grille, (i,j))) and (not isVisibleGrilleDemineur(grille, (i, j))):
+            if (contientMineGrilleDemineur(grille, (i, j)) and isVisibleGrilleDemineur(grille, (i, j)) and getAnnotationGrilleDemineur(grille, (i, j)) == const.FLAG) or (not contientMineGrilleDemineur(grille, (i,j))) and (not isVisibleGrilleDemineur(grille, (i, j))):
                 gagner = False
             j += 1
         j = 0
@@ -239,7 +238,6 @@ def gagneGrilleDemineur(grille: list) -> bool:
 
 
 def perduGrilleDemineur(grille) -> bool:
-    showGrid(grille)
     h, w = getNbLignesGrilleDemineur(grille), getNbColonnesGrilleDemineur(grille)
     perdu = True
     i, j = 0, 0
@@ -253,3 +251,11 @@ def perduGrilleDemineur(grille) -> bool:
     return not perdu
 
 
+def reinitialiserGrilleDemineur(grille: list) -> None:
+    showGrid(grille)
+    print("\n")
+    for i in range(getNbLignesGrilleDemineur(grille)):
+        for j in range(getNbLignesGrilleDemineur(grille)):
+            reinitiliserCellule(getCelluleGrilleDemineur(grille, (i, j)))
+    showGrid(grille)
+    return None
