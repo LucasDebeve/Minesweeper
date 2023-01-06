@@ -166,3 +166,14 @@ def placerMinesGrilleDemineur(grille: list, nb: int, coord: tuple) -> None:
                 nb -= 1
     return None
 
+def compterMinesVoisinesGrilleDemineur(grille: list) -> None:
+    w, h = getNbLignesGrilleDemineur(grille), getNbColonnesGrilleDemineur(grille)
+    for i in range(w):
+        for j in range(h):
+            cellule = getCelluleGrilleDemineur(grille, (i, j)) # On récupère la cellule
+            if contientMineCellule(cellule): # Si elle contient une mine
+                for voisin in getCoordonneeVoisinsGrilleDemineur(grille, (i, j)): # On parcourt ces voisins
+                    if not contientMineGrilleDemineur(grille, voisin):
+                        mines = getContenuGrilleDemineur(grille, voisin)+1 # On récupère la cellule voisine
+                        setContenuGrilleDemineur(grille, voisin, mines)
+    return None
