@@ -70,5 +70,3 @@ def contientMineCellule(cell: dict) -> bool:
     if not type_cellule(cell):
         raise TypeError("contientMineCellule: Le  paramètre n'est pas une cellule")
     return getContenuCellule(cell) == const.ID_MINE
-
-
