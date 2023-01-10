@@ -488,7 +488,6 @@ def decouvrirGrilleDemineur(grille: list, coord: tuple) -> set:
     return cellulesDecouvertes
 
 
-
 def simplifierGrilleDemineur(grille: list, coord: tuple) -> set:
     """Decourvre les cellules voisines lorsque le nombre de drapeau correspond au contenu d'une cellule
 
@@ -514,7 +513,7 @@ def simplifierGrilleDemineur(grille: list, coord: tuple) -> set:
                 for voisin in voisins:
                     if getAnnotationGrilleDemineur(grille, voisin) == const.FLAG:
                         nbFlag += 1
-                # 
+                # Compare le nombre de drapeau et les voisins non visible
                 if nbFlag == getContenuGrilleDemineur(grille, currentCoord):
                     for voisin in voisins:
                         if not getAnnotationGrilleDemineur(grille, voisin) == const.FLAG:
@@ -562,19 +561,31 @@ def simplifierToutGrilleDemineur(grille: list) -> tuple:
     ajoute = set()
     while isModifie:
         isModifie = False
+        
+        # Parcours toutes les cellules
         for i in range(getNbLignesGrilleDemineur(grille)):
             for j in range(getNbColonnesGrilleDemineur(grille)):
                 cell = getCelluleGrilleDemineur(grille, (i, j))
-                if cell[const.VISIBLE] and cell[const.RESOLU] != 0:
+                
+                # Si la cellule est visible et non résolu
+                if cell[const.VISIBLE] and not cell[const.RESOLU]:
                     a = ajouterFlagsGrilleDemineur(grille, (i, j))
                     s = simplifierGrilleDemineur(grille, (i, j))
-                    if len(s) != 0 or len(a) != 0:
+                    if len(s) > 0 or len(a) > 0:
                         print(f"on peut decouvrir : {s}")
                         print(f"on peut flag : {a}")
-                        isModifie = True if not isModifie else None
+                        isModifie = True
                         cell[const.RESOLU] = 1
-                        simplifie = simplifie.union(s)
-                        ajoute = ajoute.union(a)
-                        """Problème : Que signifie résolu ? Quand la valeur associé à const.RESOLU doit être 'Résolu' """
-    #print(simplifie, ajoute)
-    return (simplifie, ajoute)
+                        simplifie.update(s)
+                        ajoute.update(a)
+                    
+                    # Parcours les voisins et met à jour le status RESOLU
+                    k = 0
+                    isResolu = True
+                    voisins = getCoordonneeVoisinsGrilleDemineur(grille, (i,j))
+                    while k < len(voisins) and isResolu:
+                        if not getCelluleGrilleDemineur(grille, voisins[k])[const.VISIBLE]:
+                            isResolu = False
+                        
+                print(i,j)
+    return simplifie, ajoute
