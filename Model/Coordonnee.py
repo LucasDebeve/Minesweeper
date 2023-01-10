@@ -21,7 +21,7 @@ def type_coordonnee(coord: tuple) -> bool:
 
 
 def construireCoordonnee(y: int, x: int) -> tuple:
-    """_summary_
+    """Construit un tuple de coordonnées à partir des coordonnées x et y
 
     :param y: coordonnée y, index de ligne
     :type y: int

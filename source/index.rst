@@ -10,7 +10,9 @@ Welcome to Python_MineSweeper's documentation!
    :maxdepth: 2
    :caption: Contents:
 
-   ./Fichier01.rst
+   ./Coordonnee.rst
+   ./Cellule.rst
+   ./GrilleDemineur.rst
 
 
 
