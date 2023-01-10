@@ -577,3 +577,5 @@ def simplifierToutGrilleDemineur(grille: list) -> tuple:
 
                 print(i, j)
     return simplifie, ajoute
+
+
