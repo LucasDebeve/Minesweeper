@@ -135,8 +135,8 @@ class Controller:
         self.reinitialiserGrilleDemineur = load_function("reinitialiserGrilleDemineur")
         self.setVisibleCellule = load_function("setVisibleCellule")
         self.simplifierGrilleDemineur = load_function("simplifierGrilleDemineur")
-        #self.simplifierToutGrilleDemineur = load_function("simplifierToutGrilleDemineur")
-        self.simplifierToutGrilleDemineur = load_function("ajouterFlagsGrilleDemineur")
+        self.simplifierToutGrilleDemineur = load_function("simplifierToutGrilleDemineur")
+        self.ajouterFlags = load_function("ajouterFlagsGrilleDemineur")
 
     def set_win(self, win: object):
         self.win = win
@@ -202,10 +202,12 @@ class Controller:
             lst = self.simplifierGrilleDemineur(self.demineur, params)
             self.update_content_cells(lst)
         elif button == 5:
-            #lst_content, lst_flag = self.simplifierToutGrilleDemineur(self.demineur)
-            lst_flag = self.simplifierToutGrilleDemineur(self.demineur, params)
+            lst_content, lst_flag = self.simplifierToutGrilleDemineur(self.demineur)
             self.update_flag_cells(lst_flag)
-            #self.update_content_cells(lst_content)
+            self.update_content_cells(lst_content)
+        elif button == 4:
+            lst_flag = self.ajouterFlags(self.demineur, params)
+            self.update_flag_cells(lst_flag)
 
         print("Etat final de la cellule :", cell)
         # n = randint(0, 10)
