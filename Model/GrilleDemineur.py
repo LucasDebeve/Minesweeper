@@ -565,6 +565,7 @@ def actualiseResolu(grille: list, coord: tuple) -> None:
         grille[coord[0]][coord[1]][const.RESOLU] = False
     return None
 
+
 def simplifierToutGrilleDemineur(grille: list) -> tuple:
     """Aide à la résolution
 
