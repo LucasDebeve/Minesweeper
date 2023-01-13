@@ -137,6 +137,8 @@ class Controller:
         self.simplifierGrilleDemineur = load_function("simplifierGrilleDemineur")
         self.simplifierToutGrilleDemineur = load_function("simplifierToutGrilleDemineur")
         self.ajouterFlags = load_function("ajouterFlagsGrilleDemineur")
+        self.visualiserGrilleDemineur = load_function("visualiserGrilleDemineur")
+
 
     def set_win(self, win: object):
         self.win = win
@@ -176,9 +178,13 @@ class Controller:
             if self.contientMineCellule(cell):
                 self.win.set_mine(params)
                 self.setVisibleCellule(cell, True)
+                # Modification : Permet de visialiser toute la grille lorsque le joueur perd
+                lst = self.visualiserGrilleDemineur(self.demineur)
+                self.update_content_cells(lst)
                 self.end = True
                 self.win.stop_clock()
                 print("Mine displayed !! Game Lost !!!")
+                
             else:
                 # Debug
                 _cell = self.getCelluleGrilleDemineur(self.demineur, params)

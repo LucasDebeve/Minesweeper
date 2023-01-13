@@ -547,6 +547,13 @@ def isResoluGrilleDemineur(grille: list, coord: tuple) -> bool:
 
 
 def actualiseResolu(grille: list, coord: tuple) -> None:
+    """Actualise l'état resolu d'une cellule
+
+    :param grille: grille de la partie
+    :type grille: list
+    :param coord: coordonnées de la cellule à vérifier
+    :type coord: tuple
+    """
     countVoisinResolu = 0
     voisins = getCoordonneeVoisinsGrilleDemineur(grille, coord)
     for voisin in voisins:
@@ -592,3 +599,19 @@ def simplifierToutGrilleDemineur(grille: list) -> tuple:
             isModified = False
 
     return simplifie, ajoute
+
+
+def visualiserGrilleDemineur(grille: list) -> set:
+    """Permet d'afficher toute la grille, mines comprises, afin de permettre au joueur d'apprendre de ces erreurs
+
+    :param grille: grille de la partie
+    :type grille: list
+    :return: Ensemble des cellules à afficher
+    :rtype: set
+    """
+    aDecouvir = set()
+    for i in range(getNbLignesGrilleDemineur(grille)):
+        for j in range(getNbColonnesGrilleDemineur(grille)):
+            aDecouvir.add((i, j))
+            setVisibleGrilleDemineur(grille, (i, j), True)
+    return aDecouvir
