@@ -533,14 +533,41 @@ def ajouterFlagsGrilleDemineur(grille: list, coord: tuple) -> set:
     return set(voisinsNonDecouverts)
 
 
+def isResoluGrilleDemineur(grille: list, coord: tuple) -> bool:
+    """Détermine si une cellule est résolue ou non
+
+    :param grille: grille de la partie
+    :type grille: list
+    :param coord: coordonnées de la cellule à vérifier
+    :type coord: tuple
+    :return: True, si la cellule est résolue, False sinon
+    :rtype: bool
+    """
+    return grille[coord[0]][coord[1]][const.RESOLU]
+
+
+def actualiseResolu(grille: list, coord: tuple) -> None:
+    countVoisinResolu = 0
+    voisins = getCoordonneeVoisinsGrilleDemineur(grille, coord)
+    for voisin in voisins:
+        if isVisibleGrilleDemineur(grille, voisin) or (not isVisibleGrilleDemineur(grille, voisin) and getAnnotationGrilleDemineur(grille, voisin) == const.FLAG):
+            countVoisinResolu += 1
+    if countVoisinResolu == len(voisins):
+        grille[coord[0]][coord[1]][const.RESOLU] = True
+    else:
+        grille[coord[0]][coord[1]][const.RESOLU] = False
+    return None
+
 def simplifierToutGrilleDemineur(grille: list) -> tuple:
-    """Aide à la résolution : simplifie la grille
+    """Aide à la résolution
 
-    Args:
-        grille (list): grille de la partie
+    Simplifie si possible chaque cellule de la grille.
+    Ajoute les drapeaux lorsque c'est évident de chaque cellule de la grille.
 
-    Returns:
-        tuple: coordonnées des cellules découvertes et coordonnées des cellules marqués d'un drapeau
+    :param grille: grille de la partie
+    :type grille: list
+    :return: l'ensemble des cellules rendus visibles, l'ensemble des cellules marqué d'un drapeau
+    :rtype: tuple
     """
     simplifie = set()
     ajoute = set()
@@ -554,7 +581,8 @@ def simplifierToutGrilleDemineur(grille: list) -> tuple:
         for i in range(getNbLignesGrilleDemineur(grille)):
             for j in range(getNbColonnesGrilleDemineur(grille)):
                 # Si elle est visible et qu'une (ou plus) mine(s) la voisine
-                if isVisibleGrilleDemineur(grille, (i, j)) and getContenuGrilleDemineur(grille, (i, j)) != 0:
+                actualiseResolu(grille, (i, j))
+                if isVisibleGrilleDemineur(grille, (i, j)) and getContenuGrilleDemineur(grille, (i, j)) != 0 and not isResoluGrilleDemineur(grille, (i, j)):
                     simplifie.update(simplifierGrilleDemineur(grille, (i, j)))
                     ajoute.update(ajouterFlagsGrilleDemineur(grille, (i, j)))
         print(prevSimplifie)
